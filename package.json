@@ -1,0 +1,37 @@
+{
+  "name": "slots",
+  "version": "1.0.0",
+  "description": "Simple slots engine",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "start:dev": "nodemon index.js"
+  },
+  "author": "Finbet",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "eslint": "6.8.0",
+    "eslint-config-prettier": "6.10.1",
+    "nodemon": "2.0.2",
+    "prettier": "2.0.2"
+  },
+  "eslintConfig": {
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "prettier"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 2018,
+      "ecmaFeatures": {
+        "experimentalObjectRestSpread": true
+      }
+    }
+  },
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true
+  }
+}
