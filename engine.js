@@ -17,8 +17,9 @@ const Spin = ({ private: { seed }, public }, stake, numberOfLines) => {
   if (public.action !== 'Spin') {
     throw new Error('invalidAction');
   }
-  const isFreeSpin = (seed = lcg(seed)) % 2 === 0;
-  const winAmount = (seed = lcg(seed)) % 2 ? 0 : 2 * stake * numberOfLines;
+  const isFreeSpin = (seed = lcg(seed)) % 6 < 3;
+  const winAmount = (seed = lcg(seed)) % 6 < 3 ? 0 : 2 * stake * numberOfLines;
+  const reelPositions = Array.from({ length: 5 }, () => (seed = lcg(seed)) % 50);
   return {
     gameState: {
       private: { seed },
@@ -28,7 +29,7 @@ const Spin = ({ private: { seed }, public }, stake, numberOfLines) => {
         stake,
         numberOfLines,
         totalReturn: winAmount,
-        spinResult: { reelPositions: [1, 2, 3, 4, 5], winAmount },
+        spinResult: { reelPositions, winAmount },
         freeSpinsRemaining: isFreeSpin ? 2 : undefined,
       },
     },
@@ -44,7 +45,8 @@ const FreeSpin = ({ private: { seed }, public }) => {
     throw new Error('invalidAction');
   }
   const freeSpinsRemaining = public.freeSpinsRemaining - 1;
-  const winAmount = (seed = lcg(seed)) % 2 ? 0 : public.stake * public.numberOfLines;
+  const winAmount = (seed = lcg(seed)) % 6 < 3 ? 0 : public.stake * public.numberOfLines;
+  const reelPositions = Array.from({ length: 5 }, () => (seed = lcg(seed)) % 50);
   return {
     gameState: {
       private: { seed },
@@ -52,7 +54,7 @@ const FreeSpin = ({ private: { seed }, public }) => {
         ...public,
         action: freeSpinsRemaining ? 'FreeSpin' : 'Close',
         totalReturn: public.totalReturn + winAmount,
-        spinResult: { reelPositions: [1, 2, 3, 4, 5], winAmount },
+        spinResult: { reelPositions, winAmount },
         freeSpinsRemaining: freeSpinsRemaining || undefined,
       },
     },
