@@ -84,11 +84,15 @@ const Close = ({ private, public }) => {
   };
 };
 
+const unknownCommandType = () => {
+  throw new Error('unknownCommandType');
+};
+
 module.exports = {
   getConfig: () => config,
   newGame: ({ seed }) => ({ private: { seed }, public: { action: 'Spin' } }),
   execute: ({ gameState, command: [commandType, ...commandArgs] }) =>
-    ({ Spin, FreeSpin, Close }[commandType](gameState, ...commandArgs)),
+    (({ Spin, FreeSpin, Close }[commandType] || unknownCommandType)(gameState, ...commandArgs)),
   getNextActionToAutoComplete: (gameState) =>
     ['FreeSpin', 'Close'].indexOf(gameState.public.action) >= 0 ? [gameState.public.action] : null,
 };
