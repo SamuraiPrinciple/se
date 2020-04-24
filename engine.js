@@ -1,5 +1,7 @@
 const lcg = (seed) => (1664525 * seed + 1013904223) % 4294967296;
 
+const jackpotContributionPct = 1e-3;
+
 const config = {
   allowedStake: [1, 2, 5, 10],
   allowedNumberOfLines: Array.from({ length: 25 }, (_, i) => i + 1),
@@ -36,7 +38,10 @@ const Spin = ({ private: { seed }, public }, stake, numberOfLines) => {
     transaction: {
       amount: -stake * numberOfLines,
     },
-    jackpotContributions: [],
+    jackpot: {
+      contributions: [{ id: 'main', amount: stake * numberOfLines * jackpotContributionPct }],
+      isWin: false,
+    },
   };
 };
 
@@ -59,18 +64,21 @@ const FreeSpin = ({ private: { seed }, public }) => {
       },
     },
     transaction: null,
-    jackpotContributions: [],
+    jackpot: {
+      contributions: [],
+      isWin: false,
+    },
   };
 };
 
-const Close = ({ private, public }) => {
+const Close = ({ private: { seed }, public }) => {
   if (public.action !== 'Close') {
     throw new Error('invalidAction');
   }
   return {
     gameState: {
       isComplete: true,
-      private,
+      private: { seed },
       public: {
         ...public,
         action: undefined,
@@ -80,7 +88,10 @@ const Close = ({ private, public }) => {
     transaction: {
       amount: public.totalReturn,
     },
-    jackpotContributions: [],
+    jackpot: {
+      contributions: [],
+      isWin: lcg(seed) % (1 / jackpotContributionPct) === 0,
+    },
   };
 };
 
