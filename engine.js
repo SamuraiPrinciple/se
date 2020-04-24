@@ -39,8 +39,9 @@ const Spin = ({ private: { seed }, public }, stake, numberOfLines) => {
       amount: -stake * numberOfLines,
     },
     jackpot: {
-      contributions: [{ id: 'main', amount: stake * numberOfLines * jackpotContributionPct }],
-      isWin: false,
+      contributions: [
+        { pot: 'main', amount: stake * numberOfLines * jackpotContributionPct, triggerWin: false },
+      ],
     },
   };
 };
@@ -66,7 +67,6 @@ const FreeSpin = ({ private: { seed }, public }) => {
     transaction: null,
     jackpot: {
       contributions: [],
-      isWin: false,
     },
   };
 };
@@ -89,8 +89,9 @@ const Close = ({ private: { seed }, public }) => {
       amount: public.totalReturn,
     },
     jackpot: {
-      contributions: [],
-      isWin: lcg(seed) % (1 / jackpotContributionPct) === 0,
+      contributions: [
+        { pot: 'main', amount: null, triggerWin: lcg(seed) % (1 / jackpotContributionPct) === 0 },
+      ],
     },
   };
 };
