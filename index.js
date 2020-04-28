@@ -3,4 +3,4 @@ const { cpus } = require('os');
 const rpc = require('./rpc');
 const slotsEngine = require('./engine');
 
-isMaster ? cpus().forEach(fork) : rpc({ slotsEngine }, process.argv[2] || 3000);
+isMaster ? cpus().forEach(fork) : rpc({ slotsEngine }, process.argv[2] || 3030);

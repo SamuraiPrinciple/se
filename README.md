@@ -14,71 +14,231 @@
 ### getConfig
 
 ```bash
-curl -s -X POST http://localhost:3000/slotsEngine/getConfig -d '[]' | jq
+curl -s -X POST http://localhost:3030/slotsEngine/getConfig --data-binary @- <<EOF | jq
+[]
+EOF
 ```
 
 ### newGame
 
 ```bash
-curl -s -X POST http://localhost:3000/slotsEngine/newGame -d '[{"seed":1234}]' | jq
+curl -s -X POST http://localhost:3030/slotsEngine/newGame --data-binary @- <<EOF | jq
+[
+  {
+    "seed": 1234
+  }
+]
+EOF
 ```
 
 ### Simple game round
 
 ```bash
-curl -s -X POST http://localhost:3000/slotsEngine/execute \
--d '[{"gameState": {"private":{"seed":1234},"public":{"action":"Spin"}}, "command": ["Spin", 2, 25]}]' | jq
+curl -s -X POST http://localhost:3030/slotsEngine/execute --data-binary @- <<EOF | jq
+[
+  {
+    "gameState": {
+      "private": {
+        "seed": 1234
+      },
+      "public": {
+        "action": "Spin"
+      }
+    },
+    "command": ["Spin", 2, 25]
+  }
+]
+EOF
 ```
 
 ```bash
-curl -s -X POST http://localhost:3000/slotsEngine/execute \
--d '[{"gameState": {"private":{"seed":889114580},"public":{"action":"Close","stake":2,"numberOfLines":25,"totalReturn":50,"spinResult": {"reelPositions": [1,2,3,4,5],"winAmount": 100}}}, "command": ["Close"]}]' | jq
+curl -s -X POST http://localhost:3030/slotsEngine/execute --data-binary @- <<EOF | jq
+[
+  {
+    "gameState": {
+      "private": {
+        "seed": 889114580
+      },
+      "public": {
+        "action": "Close",
+        "stake": 2,
+        "numberOfLines": 25,
+        "totalReturn": 50,
+        "spinResult": {
+          "reelPositions": [1,2,3,4,5],
+          "winAmount": 100
+        }
+      }
+    },
+    "command": ["Close"]
+  }
+]
+EOF
 ```
 
 ### Game round with free spins
 
 ```bash
-curl -s -X POST http://localhost:3000/slotsEngine/execute \
--d '[{"gameState": {"private":{"seed":12345},"public":{"action":"Spin"}}, "command": ["Spin", 2, 25]}]' | jq
+curl -s -X POST http://localhost:3030/slotsEngine/execute --data-binary @- <<EOF | jq
+[
+  {
+    "gameState": {
+      "private": {
+        "seed": 12345
+      },
+      "public": {
+        "action": "Spin"
+      }
+    },
+    "command": ["Spin", 2, 25]
+  }
+]
+EOF
 ```
 
 ```bash
-curl -s -X POST http://localhost:3000/slotsEngine/execute \
--d '[{"gameState": {"private":{"seed":71072467},"public":{"action":"FreeSpin","stake":2,"numberOfLines":25,"totalReturn":0,"spinResult": {"reelPositions": [1,2,3,4,5],"winAmount": 0},"freeSpinsRemaining":2}}, "command": ["FreeSpin"]}]' | jq
+curl -s -X POST http://localhost:3030/slotsEngine/execute --data-binary @- <<EOF | jq
+[
+  {
+    "gameState": {
+      "private": {
+        "seed": 71072467
+      },
+      "public": {
+        "action": "FreeSpin",
+        "stake": 2,
+        "numberOfLines": 25,
+        "totalReturn": 0,
+        "spinResult": {
+          "reelPositions": [1,2,3,4,5],
+          "winAmount": 0
+        },
+        "freeSpinsRemaining": 2
+      }
+    },
+    "command": ["FreeSpin"]
+  }
+]
+EOF
 ```
 
 ```bash
-curl -s -X POST http://localhost:3000/slotsEngine/execute \
--d '[{"gameState": {"private":{"seed":2332836374},"public":{"action":"FreeSpin","stake":2,"numberOfLines":25,"totalReturn":50,"freeSpinsRemaining":1}}, "command": ["FreeSpin"]}]' | jq
+curl -s -X POST http://localhost:3030/slotsEngine/execute --data-binary @- <<EOF | jq
+[
+  {
+    "gameState": {
+      "private": {
+        "seed": 2332836374
+      },
+      "public":{
+        "action": "FreeSpin",
+        "stake": 2,
+        "numberOfLines": 25,
+        "totalReturn": 50,
+        "freeSpinsRemaining": 1
+      }
+    },
+    "command": ["FreeSpin"]
+  }
+]
+EOF
 ```
 
 ```bash
-curl -s -X POST http://localhost:3000/slotsEngine/execute \
--d '[{"gameState": {"private":{"seed":2726892157},"public":{"action":"Close","stake":2,"numberOfLines":25,"totalReturn":50}}, "command": ["Close"]}]' | jq
+curl -s -X POST http://localhost:3030/slotsEngine/execute --data-binary @- <<EOF | jq
+[
+  {
+    "gameState": {
+      "private": {
+        "seed": 2726892157
+      },
+      "public": {
+        "action": "Close",
+        "stake": 2,
+        "numberOfLines": 25,
+        "totalReturn": 50
+      }
+    },
+    "command": ["Close"]
+  }
+]
+EOF
 ```
 
 ### Some errors
 
 ```bash
-curl -s -X POST http://localhost:3000/slotsEngine/execute \
--d '[{"gameState": {"private":{"seed":12345},"public":{"action":"Spin"}}, "command": ["Spin", 20, 25]}]' | jq
+curl -s -X POST http://localhost:3030/slotsEngine/execute --data-binary @- <<EOF | jq
+[
+  {
+    "gameState": {
+      "private": {
+        "seed": 12345
+      },
+      "public": {
+        "action": "Spin"
+      }
+    },
+    "command": ["Spin", 20, 25]
+  }
+]
+EOF
 ```
 
 ```bash
-curl -s -X POST http://localhost:3000/slotsEngine/execute \
--d '[{"gameState": {"private":{"seed":12345},"public":{"action":"Close","stake":2,"numberOfLines":25,"totalReturn":50}}, "command": ["FreeSpin"]}]' | jq
+curl -s -X POST http://localhost:3030/slotsEngine/execute --data-binary @- <<EOF | jq
+[
+  {
+    "gameState": {
+      "private": {
+        "seed": 12345
+      },
+      "public": {
+        "action": "Close",
+        "stake": 2,
+        "numberOfLines": 25,
+        "totalReturn": 50
+      }
+    },
+    "command": ["FreeSpin"]
+  }
+]
+EOF
 ```
 
 ### Auto complete
 
 ```bash
-curl -s -X POST http://localhost:3000/slotsEngine/getNextActionToAutoComplete \
--d '[{"private":{"seed":12345},"public":{"action":"Close","stake":2,"numberOfLines":25,"totalReturn":50}}]' | jq
+curl -s -X POST http://localhost:3030/slotsEngine/getNextActionToAutoComplete --data-binary @- <<EOF | jq
+[
+  {
+    "private": {
+      "seed": 12345
+    },
+    "public": {
+      "action": "Close",
+      "stake": 2,
+      "numberOfLines": 25,
+      "totalReturn": 50
+    }
+  }
+]
+EOF
 ```
 
 ```bash
-curl -s -X POST http://localhost:3000/slotsEngine/getNextActionToAutoComplete \
--d '[{"private":{"seed":12345},"public":{"action":"Spin"}}]' | jq
+curl -s -X POST http://localhost:3030/slotsEngine/getNextActionToAutoComplete --data-binary @- <<EOF | jq
+[
+  {
+    "private": {
+      "seed": 12345
+    },
+    "public": {
+      "action": "Spin"
+    }
+  }
+]
+EOF
 ```
 
 ### TBD
