@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- Node.js 14.0.0+
+- Node.js 14.4.0+
 - npm 6.14.4+
 
 ## Starting the service

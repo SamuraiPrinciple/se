@@ -1,7 +1,5 @@
 const lcg = (seed) => (1664525 * seed + 1013904223) % 4294967296;
 
-const jackpotContributionPct = 1e-3;
-
 const config = {
   allowedStake: [1, 2, 5, 10],
   allowedNumberOfLines: Array.from({ length: 25 }, (_, i) => i + 1),
@@ -39,9 +37,7 @@ const Spin = ({ private: { seed }, public }, stake, numberOfLines) => {
       amount: -stake * numberOfLines,
     },
     jackpot: {
-      contributions: [
-        { pot: 'main', amount: stake * numberOfLines * jackpotContributionPct, triggerWin: false },
-      ],
+      contribute: ['Grand', 'Major'],
     },
   };
 };
@@ -53,6 +49,11 @@ const FreeSpin = ({ private: { seed }, public }) => {
   const freeSpinsRemaining = public.freeSpinsRemaining - 1;
   const winAmount = (seed = lcg(seed)) % 6 < 3 ? 0 : public.stake * public.numberOfLines;
   const reelPositions = Array.from({ length: 5 }, () => (seed = lcg(seed)) % 50);
+  const trigger = [
+    ...((seed = lcg(seed)) % 101 < 33 ? ['Grand'] : []),
+    ...((seed = lcg(seed)) % 101 < 10 ? ['Major'] : []),
+  ];
+  const jackpot = trigger.length ? { trigger } : undefined;
   return {
     gameState: {
       private: { seed },
@@ -65,9 +66,7 @@ const FreeSpin = ({ private: { seed }, public }) => {
       },
     },
     transaction: null,
-    jackpot: {
-      contributions: [],
-    },
+    jackpot,
   };
 };
 
@@ -87,11 +86,6 @@ const Close = ({ private: { seed }, public }) => {
     },
     transaction: {
       amount: public.totalReturn,
-    },
-    jackpot: {
-      contributions: [
-        { pot: 'main', amount: null, triggerWin: lcg(seed) % (1 / jackpotContributionPct) === 0 },
-      ],
     },
   };
 };
