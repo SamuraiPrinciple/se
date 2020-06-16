@@ -25,7 +25,6 @@ server {
     server_name rgs-remote-slot-engine-example-dev.finrings.com;
     ssl_certificate /etc/ssl/finrings.com.combined.pem;
     ssl_certificate_key /etc/ssl/finrings.com.combined.pem;
-    include conf.d/common-headers.conf;
     location / {
         proxy_pass http://localhost:3030/;
     }
